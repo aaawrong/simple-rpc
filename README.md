@@ -1,3 +1,3 @@
 # simple-rpc
 
-follow by https://github.com/geektutu/7days-golang
+follow by https://geektutu.com/post/geerpc-day1.html
