@@ -40,6 +40,7 @@ var DefaultServer = NewServer()
 
 func (server *Server) ServeConn(conn io.ReadWriteCloser) {
 	var opt Option
+	//收到服务端发来的opt进行解析
 	if err := json.NewDecoder(conn).Decode(&opt); err != nil {
 		log.Println("rpc server: options error: ", err)
 		return

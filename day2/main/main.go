@@ -11,7 +11,7 @@ import (
 )
 
 func startServer(addr chan string) {
-	// pick a free port
+	// 随机选择端口监听
 	l, err := net.Listen("tcp", ":0")
 	if err != nil {
 		log.Fatal("network error:", err)
@@ -22,7 +22,7 @@ func startServer(addr chan string) {
 }
 
 func main() {
-	log.SetFlags(0)
+	log.SetFlags(0) //不输出时间
 	addr := make(chan string)
 	go startServer(addr)
 

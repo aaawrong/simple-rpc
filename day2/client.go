@@ -109,7 +109,7 @@ func NewClient(conn net.Conn, opt *Option) (*Client, error) {
 		log.Println("rpc client: codec error:", err)
 		return nil, err
 	}
-	// send options with server
+	// 给服务端发送 opt
 	if err := json.NewEncoder(conn).Encode(opt); err != nil {
 		log.Println("rpc client: options error: ", err)
 		_ = conn.Close()
@@ -195,7 +195,7 @@ func parseOptions(opts ...*Option) (*Option, error) {
 	return opt, nil
 }
 
-// 实现发送请求的能力
+// 客户端发送请求给服务端
 func (client *Client) send(call *Call) {
 	client.sending.Lock()
 	defer client.sending.Unlock()
@@ -240,8 +240,7 @@ func (client *Client) Go(serviceMethod string, args, reply interface{}, done cha
 	return call
 }
 
-// Call invokes the named function, waits for it to complete,
-// and returns its error status.
+// 接收，发送完成的通知
 func (client *Client) Call(serviceMethod string, args, reply interface{}) error {
 	call := <-client.Go(serviceMethod, args, reply, make(chan *Call, 1)).Done
 	return call.Error
