@@ -81,6 +81,10 @@ func (server *Server) ServeConn(conn io.ReadWriteCloser) {
 	server.serveCodec(f(conn))
 }
 
+func Register(rcvr interface{}) error {
+	return DefaultServer.Register(rcvr)
+}
+
 // 服务注册
 func (server *Server) Register(rcvr interface{}) error {
 	s := newService(rcvr)
@@ -89,8 +93,6 @@ func (server *Server) Register(rcvr interface{}) error {
 	}
 	return nil
 }
-
-func Register(rcvr interface{}) error { return DefaultServer.Register(rcvr) }
 
 // invalidRequest is a placeholder for response argv when error occurs
 var invalidRequest = struct{}{}
@@ -140,7 +142,7 @@ func (server *Server) readRequest(cc codec.Codec) (*request, error) {
 	// make sure that argvi is a pointer, ReadBody need a pointer as parameter
 	argvi := req.argv.Interface()
 	if req.argv.Type().Kind() != reflect.Ptr {
-		argvi = req.argv.Addr().Interface()
+		argvi = req.argv.Addr().Interface() // 获取内存地址
 	}
 	if err = cc.ReadBody(argvi); err != nil {
 		log.Println("rpc server: read argv err:", err)

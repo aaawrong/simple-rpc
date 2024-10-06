@@ -109,7 +109,7 @@ func NewClient(conn net.Conn, opt *Option) (*Client, error) {
 		log.Println("rpc client: codec error:", err)
 		return nil, err
 	}
-	// 给服务端发送 opt
+	// 给服务端发送 opt，将opt写入conn
 	if err := json.NewEncoder(conn).Encode(opt); err != nil {
 		log.Println("rpc client: options error: ", err)
 		_ = conn.Close()
