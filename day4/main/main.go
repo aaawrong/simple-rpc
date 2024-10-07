@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"time"
@@ -66,7 +67,8 @@ func main() {
 	//args := fmt.Sprintf("geerpc req %d", 11)
 	args := &Args{Num1: 1, Num2: 3}
 	var reply int
-	if err := client.Call("Foo.Sum", args, &reply); err != nil {
+	ctx, _ := context.WithTimeout(context.Background(), time.Second)
+	if err := client.Call(ctx, "Foo.Sum", args, &reply); err != nil {
 		log.Fatal("call Foo.Sum error:", err)
 	}
 	log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)

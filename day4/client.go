@@ -1,6 +1,7 @@
 package geerpc
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -267,7 +268,15 @@ func (client *Client) Go(serviceMethod string, args, reply interface{}, done cha
 }
 
 // 接收服务端消息或者发送接受产生错误的通知
-func (client *Client) Call(serviceMethod string, args, reply interface{}) error {
-	call := <-client.Go(serviceMethod, args, reply, make(chan *Call, 1)).Done
-	return call.Error
+func (client *Client) Call(ctx context.Context, serviceMethod string, args, reply interface{}) error {
+	call := client.Go(serviceMethod, args, reply, make(chan *Call, 1))
+
+	// Client.Call 的超时处理机制，使用 context 包实现，控制权交给用户
+	select {
+	case <-ctx.Done():
+		client.removeCall(call.Seq)
+		return errors.New("rpc client: call failed: " + ctx.Err().Error())
+	case c := <-call.Done:
+		return c.Error
+	}
 }
