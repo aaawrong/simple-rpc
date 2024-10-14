@@ -69,5 +69,14 @@ func main() {
 	//	log.Fatal("call Foo.Sum error:", err)
 	//}
 	//log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)
-
+	select {}
 }
+
+// call(ch)
+// go startServer(ch)运行完会退出，因为主协程运行完就关了
+//func main() {
+//	log.SetFlags(0)
+//	ch := make(chan string)
+//	go call(ch)
+//	startServer(ch)
+//}

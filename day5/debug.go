@@ -37,7 +37,7 @@ type debugService struct {
 	Method map[string]*methodType
 }
 
-func (server debugHTTP) ServerHTTP(w http.ResponseWriter, req *http.Request) {
+func (server debugHTTP) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	var services []debugService
 	server.serviceMap.Range(func(namei, svci interface{}) bool {
 		svc := svci.(*service)

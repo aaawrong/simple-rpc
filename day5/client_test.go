@@ -71,7 +71,7 @@ func TestClient_Call(t *testing.T) {
 	})
 }
 
-func TextXDial(t *testing.T) {
+func TestXDial(t *testing.T) {
 	if runtime.GOOS == "linux" {
 		ch := make(chan struct{})
 		addr := "/tmp/geerpc.sock"
