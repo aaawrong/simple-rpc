@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net"
-	"sync"
 	"time"
 
 	"geerpc"
@@ -46,29 +45,30 @@ func main() {
 
 	time.Sleep(time.Second)
 	// 服务端向客户端发送请求
-	var wg sync.WaitGroup
-	for i := 0; i < 5; i++ {
-		wg.Add(1)
-		go func(i int) {
-			defer wg.Done()
-			//args := fmt.Sprintf("geerpc req %d", i)
-			//var reply string
-			args := &Args{Num1: i, Num2: i * i}
-			var reply int
-			if err := client.Call("Foo.Sum", args, &reply); err != nil {
-				log.Fatal("call Foo.Sum error:", err)
-			}
-			//log.Println("reply:", reply)
-			log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)
-		}(i)
-	}
-	wg.Wait()
+	//var wg sync.WaitGroup
+	//for i := 0; i < 5; i++ {
+	//	wg.Add(1)
+	//	go func(i int) {
+	//		defer wg.Done()
+	//		//args := fmt.Sprintf("geerpc req %d", i)
+	//		//var reply string
+	//		args := &Args{Num1: i, Num2: i * i}
+	//		var reply int
+	//		if err := client.Call("Foo.Sum", args, &reply); err != nil {
+	//			log.Fatal("call Foo.Sum error:", err)
+	//		}
+	//		//log.Println("reply:", reply)
+	//		log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)
+	//	}(i)
+	//}
+	//wg.Wait()
 
 	//args := fmt.Sprintf("geerpc req %d", 11)
-	//var reply string
-	//if err := client.Call("Foo.Sum", args, &reply); err != nil {
-	//	log.Fatal("call Foo.Sum error:", err)
-	//}
-	//log.Println("reply:", reply)
-
+	args := &Args{Num1: 1, Num2: 3}
+	var reply int
+	if err := client.Call("Foo.Sum", args, &reply); err != nil {
+		log.Fatal("call Foo.Sum error:", err)
+	}
+	log.Printf("%d + %d = %d", args.Num1, args.Num2, reply)
+	//select {}
 }

@@ -10,6 +10,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"time"
 
 	"geerpc/codec"
 )
@@ -25,13 +26,16 @@ const MagicNumber = 0x3bef5c
 // 服务端首先使用 JSON 解码 Option，然后通过 Option 的 CodeType 解码剩余的内容
 // | Option | Header1 | Body1 | Header2 | Body2 | ...
 type Option struct {
-	MagicNumber int        // MagicNumber marks this's a geerpc request
-	CodecType   codec.Type // client may choose different Codec to encode body
+	MagicNumber    int           // MagicNumber marks this's a geerpc request
+	CodecType      codec.Type    // client may choose different Codec to encode body
+	ConnectTimeOut time.Duration // 0 means no limit
+	HandleTimeOut  time.Duration
 }
 
 var DefaultOption = &Option{
-	MagicNumber: MagicNumber,
-	CodecType:   codec.JsonType,
+	MagicNumber:    MagicNumber,
+	CodecType:      codec.JsonType,
+	ConnectTimeOut: 10 * time.Second,
 }
 
 // Server represents an RPC Server.
