@@ -70,6 +70,7 @@ func (xc *XClient) call(rpcAddr string, ctx context.Context, serviceMethod strin
 	return client.Call(ctx, serviceMethod, args, reply)
 }
 
+// Call负载均衡
 func (xc *XClient) Call(ctx context.Context, serviceMethod string, args, reply interface{}) error {
 	rpcAddr, err := xc.d.Get(xc.mode)
 	if err != nil {

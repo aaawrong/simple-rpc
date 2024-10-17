@@ -32,9 +32,9 @@ func foo(xc *xclient.XClient, ctx context.Context, typ, serviceMethod string, ar
 	var reply int
 	var err error
 	switch typ {
-	case "call":
+	case "call": // 负载均衡
 		err = xc.Call(ctx, serviceMethod, args, &reply)
-	case "broadcast":
+	case "broadcast": // 广播
 		err = xc.Broadcast(ctx, serviceMethod, args, &reply)
 	}
 	if err != nil {
