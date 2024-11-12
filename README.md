@@ -1,3 +1,3 @@
 # simple-rpc
 
-follow by https://geektutu.com/post/geerpc.html
+follow https://geektutu.com/post/geerpc.html
